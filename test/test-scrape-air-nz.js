@@ -8,19 +8,27 @@ test("Request Air NZ with different locations and dates", function(t) {
 
   // iterate through test dates and destinations
 
+
+          var movies = []
+          var count = 0
       requestAirNewZealand(function doThisAfterRequest(err, response, data) {
         if (err) {
           throw err
         } else {
-          t.equal(200, response, "response code 200" )
-          var movieArray = scrapeMovies(data)
-          console.log(movieArray)
+          scrapeMovies(data, function doThisWtihMovies (movieArray) {
+            movieArray.map(function(movie) {
+              movies.push(movie)
+            })
+            count++
+            if(count === 27) {
 
+
+              console.log(movies)
+            }
+          })
         }
       });
 
 
       t.end()
 })
-
-

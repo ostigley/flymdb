@@ -1,6 +1,6 @@
 var cheerio = require('cheerio')
 
-module.exports = function (webdata) {
+module.exports = function (webdata, doThisWithNewMovies) {
 	$ = cheerio.load(webdata, {
     withDomLvl1: true,
     normalizeWhitespace: true,
@@ -15,10 +15,7 @@ module.exports = function (webdata) {
 			possibleMovies.push(movie);
 		}
 	}
-	possibleMovies.shift()
-	possibleMovies.pop()
-	return possibleMovies
+	// possibleMovies.shift()
+	// possibleMovies.pop()
+	doThisWithNewMovies(possibleMovies)
 };
-
-
-//scarpe("<p>How To Be Single</p><p>Second Time lucky</p>")
