@@ -4,7 +4,7 @@
 
 
 module.exports= function(date, flight, doThisAfterRequest) {
-	var path = "/entertainment/%month-year%/ex2/movies/201?%flight%&date=%day-month-year%"
+	var path = "/entertainment/%month-year%/ef2/movies/201?%flight%&date=%day-month-year%"
 
 	/*
 	expected path format:
@@ -13,10 +13,12 @@ module.exports= function(date, flight, doThisAfterRequest) {
 	http://www.airnewzealand.co.nz/entertainment/May-2016/ex2/movies/201?des=%destination%&16-May-2016
 	*/
 
+
+
 	//Changes to make to default path
 	var changes = {
 		"%month-year%" : `${date.month}-${date.year}`,
-		"%date=%day-month-year%": `${date.day}-${date.month}-${date.year}`,
+		"%day-month-year%": `${date.day}-${date.month}-${date.year}`,
 		"%flight%": `no=${flight}`
 	}
 	//edit URL
@@ -30,6 +32,7 @@ module.exports= function(date, flight, doThisAfterRequest) {
 		path: path,
 		method: "GET"
 	}
+	console.log(options.hostname+path)
 
 	request(options.hostname+path, function(err, response, body) {
 		if(err) {

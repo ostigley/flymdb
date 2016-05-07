@@ -29,21 +29,21 @@ var dates = [
 ]
 
 
-test("Request Air NZ with different locations and dates", function(t) {
+// test("Request Air NZ with different locations and dates", function(t) {
 
-	// iterate through test dates and destinations
-	for (var i=0 ; i< flights.length; i++ ) {
-		for (var j=0 ; j< dates.length; j++ ) {
-			requestAirNewZealand(dates[j], flights[i], function doThisAfterRequest(err, response, data) {
-				if (err) {
-					throw err
-				} else {
-					t.equal(200, response, "response code 200" )
-				}
-			});
-		}
-	}
-			t.end()
-})
+// 	// iterate through test dates and destinations
+// 	for (var i=0 ; i< flights.length; i++ ) {
+// 		for (var j=0 ; j< dates.length; j++ ) {
+// 			requestAirNewZealand(dates[j], flights[i], function doThisAfterRequest(err, response, data) {
+// 				if (err) {
+// 					throw err
+// 				} else {
+// 					t.equal(200, response, "response code 200" )
+// 				}
+// 			});
+// 		}
+// 	}
+// 			t.end()
+// })
 
 
