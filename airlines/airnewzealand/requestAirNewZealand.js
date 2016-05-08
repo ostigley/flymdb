@@ -22,7 +22,7 @@ module.exports= function(doThisAfterRequest) {
 		for (var key in changes) {
 			path = path.replace(key, changes[key])
 		}
-		console.log("Requesting URL: ", hostname + path)
+		console.log("Making multiple requests to Air NZ")
 
 		request(hostname + path, function(err, response, body) {
 			if(err) {

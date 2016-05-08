@@ -1,21 +1,24 @@
 var cheerio = require('cheerio')
 
 module.exports = function (webdata, doThisWithNewMovies) {
+	//parse html data in Cheerio module
 	$ = cheerio.load(webdata, {
-    withDomLvl1: true,
-    normalizeWhitespace: true,
-    xmlMode: false,
-    decodeEntities: true
-});
+	    withDomLvl1: true,
+	    normalizeWhitespace: true,
+	    xmlMode: false,
+	    decodeEntities: true
+	});
 	
-	var possibleMovies = [];
+	// create possible movies array , and push all <p> as potential movies
+	var possibleMovies = []
 	for (var i = 0 ; i<$('p').length; i++) {
 		var movie = $('p')[i].children[0].data
-		if (movie != undefined) {
+		if (movie !== undefined || movie !== ' ') {
 			possibleMovies.push(movie);
 		}
 	}
-	// possibleMovies.shift()
-	// possibleMovies.pop()
+	
 	doThisWithNewMovies(possibleMovies)
-};
+};;
+
+

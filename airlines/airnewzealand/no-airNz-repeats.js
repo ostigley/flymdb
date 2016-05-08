@@ -1,0 +1,20 @@
+// helper function for air NZ to remove repeats and error messages in movie possibleMovies
+
+module.exports = function removeRepeats (possibleMovies) {
+	for(var i=0; i<possibleMovies.length; i++) {
+		if (possibleMovies.indexOf(possibleMovies[i]) === possibleMovies.lastIndexOf(possibleMovies[i])) {
+		} else {
+			possibleMovies.splice(possibleMovies.lastIndexOf(possibleMovies[i]),1)
+			return removeRepeats(possibleMovies);
+		}
+	}
+	var extras = [" ", undefined, 'We don\'t have any content matching your selection']
+	extras.map(function(extra) {
+		possibleMovies.splice(possibleMovies.indexOf(extra), 1)
+	})
+
+	return possibleMovies.sort()
+};
+
+
+//use this array as a test:  var testArray = require('../../test/helpers/test-movie-array.js')
