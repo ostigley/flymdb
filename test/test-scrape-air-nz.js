@@ -18,7 +18,7 @@ test("Request Air NZ with different locations and dates", function(t) {
         // 27 requests to air nx website to retrieve data
         if(count === 27) {
           movies = noRepeatsAirNz(movies)          
-          console.log(movies.length)
+          console.log(movies)
           t.equal(-1,movies.indexOf("We don't have any content matching your selection"), "No error messages in movie array")
           t.equal(-1, movies.indexOf(" "), "Movie array has no blanks" )
           t.ok(movies.length > 100, "atleast 100 movies in array")
