@@ -10,4 +10,5 @@ test("test omdb api response ", function(t) {
 			t.equal(response["Title"],movie,"Movie title returned from API is as expected") 
 		}
 	})
+	t.end()
 })
