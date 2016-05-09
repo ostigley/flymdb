@@ -13,7 +13,9 @@ module.exports= function(doThisAfterRequest) {
 		"%month%": monthList[d.getMonth()],
 		"%year%": d.getFullYear()
 	}
-	
+	var count= 0
+	var massiveString = ""
+
 	suffix.forEach(function(suf) {
 		var path = "/%month%-%year%/all/movies/%suffix%";
 		changes["%suffix%"] = suf
@@ -28,7 +30,11 @@ module.exports= function(doThisAfterRequest) {
 			if(err) {
 				doThisAfterRequest(err)
 			} else {
-				doThisAfterRequest(err, response.statusCode, body)
+				massiveString+=body
+				count++
+				if (count == 27) {
+					doThisAfterRequest(err, response.statusCode, massiveString)
+				}
 			}
 		})
 		

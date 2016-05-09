@@ -10,42 +10,25 @@ var fs = require('fs')
 requestAnz(function doThisWithArray (err, statusCode, webdata) {
 	scrapeMovies(webdata,function doThisWithArray (movieArray) {
 		var filteredMovieArray = noRepeats(movieArray)
-
+		console.log("Movies scraped: "filteredMovieArray.length)
 		filteredMovieArray.forEach(function(movie) {
-			setTimeout(
+			
 			getMovieRatings(movie, function addToDb (err, body, movie) {
+
 				if (body !== undefined) {
 					var newMovie = new Movie(body.Title, body.Genre, body.Plot, body.Language, body.Metascore, body.imdbRating, body.imdbVotes, body.imdbID);
-					fs.readFile(__dirname + '/data/movies-and-ratings.json', function dothis (err, data) {
-						if (err) {
-							throw err;
-						} else {
-							
-							console.log(newMovie)
-							fs.appendFile(__dirname + '/data/movies-and-ratings.json', JSON.stringify(newMovie)+"\n","UTF-8", function (err, response) {
-								if (err) {
-									throw err;
-								} else {
-									console.log("New movie added: ", newMovie.Title);
-								}
-							})
-						}
-					})
+					var database = fs.readFileSync(__dirname + '/data/movies-and-ratings.json',"UTF-8");
+					database = JSON.parse(database);
+					database.movies.push(newMovie);
+					fs.writeFileSync(__dirname + '/data/movies-and-ratings.json', JSON.stringify(database),"UTF-8");
+					console.log("Movies added: ", database.movies.length);
 				}
 
-			})
-			, 200)		
+			})	
 		})
+		console.log("Air New Zealand Database update complete")
 	})
 })
-
-
-
-
-
-
-
-
 
 
 
