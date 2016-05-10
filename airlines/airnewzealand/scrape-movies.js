@@ -11,6 +11,7 @@ module.exports = function (webdata, doThisWithNewMovies) {
 	
 	// create possible movies array , and push all <p> as potential movies
 	var possibleMovies = []
+	console.log("potential movies to scrape: ", $('p').length)
 	for (var i = 0 ; i<$('p').length; i++) {
 		var movie = $('p')[i].children[0].data
 		if (movie !== undefined || movie !== ' ') {

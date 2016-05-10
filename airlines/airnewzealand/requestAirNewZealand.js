@@ -33,6 +33,7 @@ module.exports= function(doThisAfterRequest) {
 				massiveString+=body
 				count++
 				if (count == 27) {
+					console.log("total html", massiveString.length)
 					doThisAfterRequest(err, response.statusCode, massiveString)
 				}
 			}

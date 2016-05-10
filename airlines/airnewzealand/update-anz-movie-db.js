@@ -10,7 +10,7 @@ var fs = require('fs')
 requestAnz(function doThisWithArray (err, statusCode, webdata) {
 	scrapeMovies(webdata,function doThisWithArray (movieArray) {
 		var filteredMovieArray = noRepeats(movieArray)
-		console.log("Movies scraped: "filteredMovieArray.length)
+		console.log("Movies scraped: ", filteredMovieArray.length)
 		filteredMovieArray.forEach(function(movie) {
 			
 			getMovieRatings(movie, function addToDb (err, body, movie) {
