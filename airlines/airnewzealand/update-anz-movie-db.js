@@ -10,7 +10,7 @@ var fs = require('fs')
 requestAnz(function doThisWithArray (err, statusCode, webdata) {
 	scrapeMovies(webdata,function doThisWithArray (movieArray) {
 		var filteredMovieArray = noRepeats(movieArray)
-		console.log("Movies scraped: "filteredMovieArray.length)
+		console.log("Movies scraped: ", filteredMovieArray.length)
 		filteredMovieArray.forEach(function(movie) {
 			
 			getMovieRatings(movie, function addToDb (err, body, movie) {
@@ -21,7 +21,6 @@ requestAnz(function doThisWithArray (err, statusCode, webdata) {
 					database = JSON.parse(database);
 					database.movies.push(newMovie);
 					fs.writeFileSync(__dirname + '/data/movies-and-ratings.json', JSON.stringify(database),"UTF-8");
-					console.log("Movies added: ", database.movies.length);
 				}
 
 			})	

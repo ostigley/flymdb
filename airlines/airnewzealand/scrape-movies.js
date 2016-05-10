@@ -1,6 +1,7 @@
 var cheerio = require('cheerio')
 
 module.exports = function (webdata, doThisWithNewMovies) {
+	console.log("scraping movie titles from string of length ", webdata.length)
 	//parse html data in Cheerio module
 	$ = cheerio.load(webdata, {
 	    withDomLvl1: true,
@@ -15,6 +16,7 @@ module.exports = function (webdata, doThisWithNewMovies) {
 		var movie = $('p')[i].children[0].data
 		if (movie !== undefined || movie !== ' ') {
 			possibleMovies.push(movie);
+			console.log($('p').length, i)
 		}
 	}
 	
