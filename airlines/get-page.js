@@ -1,7 +1,6 @@
 var request = require('superagent')
 
 module.exports = function (uri) {
-	console.log("Getting data from ", uri)
   return new Promise(function (resolve, reject) {
 
     request

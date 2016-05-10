@@ -7,29 +7,14 @@ var fs = require('fs')
 // get movies from air new zealand, send callback as 
 
 
-requestAnz(function doThisWithArray (err, statusCode, webdata) {
-	scrapeMovies(webdata,function doThisWithArray (movieArray) {
-		var filteredMovieArray = noRepeats(movieArray)
-		console.log("Movies scraped: ", filteredMovieArray.length)
-		filteredMovieArray.forEach(function(movie) {
-			
-			getMovieRatings(movie, function addToDb (err, body, movie) {
-
-				if (body !== undefined) {
-					var newMovie = new Movie(body.Title, body.Genre, body.Plot, body.Language, body.Metascore, body.imdbRating, body.imdbVotes, body.imdbID);
-					var database = fs.readFileSync(__dirname + '/data/movies-and-ratings.json',"UTF-8");
-					database = JSON.parse(database);
-					database.movies.push(newMovie);
-					fs.writeFileSync(__dirname + '/data/movies-and-ratings.json', JSON.stringify(database),"UTF-8");
-				}
-
-			})	
-		})
-		console.log("Air New Zealand Database update complete")
+requestAnz()
+	.then(function(htmlArray) {
+		return noRepeats(scrapeMovies(htmlArray))
 	})
-})
-
-
+	.then( function(movieTitles) {
+		console.log(movieTitles.length)
+	})
+	.catch(handleError)
 
 
 
@@ -45,6 +30,11 @@ function Movie (Title, Genre, Plot, Language, Metascore, imdbRating, imdbVotes, 
 	this.airline = "Air New Zealand"
 }
 
+function handleError (error) {
+	if (error) {
+		throw error
+	}
+}
 
 
 

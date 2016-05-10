@@ -2,9 +2,9 @@
 
 module.exports = function removeRepeats (possibleMovies) {
 	for(var i=0; i<possibleMovies.length; i++) {
-		if (possibleMovies.indexOf(possibleMovies[i]) === possibleMovies.lastIndexOf(possibleMovies[i])) {
-		} else {
+		if (possibleMovies.indexOf(possibleMovies[i]) !== possibleMovies.lastIndexOf(possibleMovies[i])) {
 			possibleMovies.splice(possibleMovies.lastIndexOf(possibleMovies[i]),1)
+			console.log(possibleMovies.length)
 			return removeRepeats(possibleMovies);
 		}
 	}
