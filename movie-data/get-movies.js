@@ -1,24 +1,20 @@
 var request = require ('request')
 var qs = require('query-string')
+var getPage = require('../airlines/get-page.js')
 
-module.exports = function (title, doThisAfter) {
+module.exports = function (titlesArray) {
 	var hostname = "http://www.omdbapi.com/?"
 	// var moviePath = "t%title%&type=movie&tomatoes=true"
 
-	var moviePath = {
-		t: title,
-		type: "movie",
-		tomatoes: true
-	}
-
-	request(hostname+qs.stringify(moviePath), function doThisWithMovieData (err, response, body ) {
-		if (err) {
-			doThisAfter(err)
-		} else {
-			doThisAfter(err, JSON.parse(response["body"])) 
+	titlesArray.map(function(title, index) {
+		var moviePath = {
+			t: title,
+			type: "movie",
+			tomatoes: true
 		}
+		titlesArray[index] = hostname+qs.stringify(moviePath)
 	})
-
+	return Promise.all((titlesArray.map(getPage)))
 }
 
 
