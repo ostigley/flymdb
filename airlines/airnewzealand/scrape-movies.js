@@ -1,7 +1,7 @@
 var cheerio = require('cheerio')
 
 module.exports = function (html) {
-	console.log("scraping movie titles from string of length ")
+	console.log("html length: ", html.length)
 	//parse html data in Cheerio module
 	$ = cheerio.load(html, {
 	    withDomLvl1: true,
@@ -17,10 +17,10 @@ module.exports = function (html) {
 		var movie = titles[i].children[0].data
 		if (movie !== undefined && movie !== ' ') {
 			possibleMovies.push(movie);
-			console.log(i, titles.length)
 		}
 	}
 	
+	console.log(`Scraped: ${titles.length} movies`)
 	return possibleMovies
 };;
 

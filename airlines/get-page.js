@@ -1,16 +1,15 @@
-var request = require('superagent')
+var request = require('request')
 
 module.exports = function (uri) {
   return new Promise(function (resolve, reject) {
-
-    request
-      .get(uri)
-      .end(function (err, res) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(res.text)
-        }
-      })
+    request(uri, function (error, response, body) {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(body)
+      }
+    })
   })
 }
+
+
