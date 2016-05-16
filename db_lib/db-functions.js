@@ -38,12 +38,17 @@ function addNewMovie (movieData) {
 
 function addMovieToAirline (movieId, airline) {
 	return new Promise (function (resolve, reject) {
-		knex(airline)
-			.insert({movieId: movieId})
-			.then( function (airlineResponse) {
-					console.log(`Movieid: ${movieId} added to airline movies: ${airlineResponse[0]}`);
-					resolve(airlineResponse);
-			});
+		if (!isMovieInAirline) {
+			knex(airline)
+				.insert({movieId: movieId})
+				.then( function (airlineResponse) {
+						console.log(`Movieid: ${movieId} added to airline movies: ${airlineResponse[0]}`);
+						resolve(airlineResponse);
+				});
+		} else {
+			console.log("Movie is already in both databases")
+			resolve(movieId)
+		}
 	});
 }
 
