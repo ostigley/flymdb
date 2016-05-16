@@ -4,7 +4,6 @@ require('dotenv').config();
 module.exports = {
 
   development: {
-    client: 'postgresql',
     client: 'sqlite3',
     connection: {
     filename: "./flymydb.sqlite"
