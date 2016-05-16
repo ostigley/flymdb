@@ -1,5 +1,6 @@
 node_modules
 npm-debug.log
 airlines/airnewzealand/data/movies-and-ratings.json
-
 airlines/singapore/data/
+
+.env
