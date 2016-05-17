@@ -8,6 +8,7 @@ module.exports = {
     connection: {
     filename: "./flymydb.sqlite"
   },
+  useNullAsDefault: true,
     pool: {
       min: 2,
       max: 10

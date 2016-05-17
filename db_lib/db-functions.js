@@ -4,19 +4,11 @@ var knex = require('knex')({
     client: 'sqlite3',
     connection: {
     filename: "./flymydb.sqlite"
-	 }
+	 },
+	 useNullAsDefault: true
 });
 var getMovie = require('../movie-data/get-movies.js');
-/*
-functions to write: 
-	get airline movies 
-	doesMovieExist - check if movie is already in movies table - takes title, returns true or false .
-	add movie
 
-
-
-
-*/
 
 exports.airlineMovies = function (airline, callback) {
 	knex('movies')
@@ -26,10 +18,10 @@ exports.airlineMovies = function (airline, callback) {
 		});
 };
 
-function addNewMovie (movieData) {
+function addNewMovie (movieData, table) {
 	return new Promise (function (resolve, reject) {
-		knex('movies')
-		.insert(JSON.parse(movieData))
+		knex(table)
+		.insert(movieData)
 		.then(function (response) {
 				resolve(response);
 		});
@@ -38,61 +30,87 @@ function addNewMovie (movieData) {
 
 function addMovieToAirline (movieId, airline) {
 	return new Promise (function (resolve, reject) {
-		if (!isMovieInAirline) {
-			knex(airline)
-				.insert({movieId: movieId})
+		if (movieNotInAirline(movieId, airline)) {
+			addNewMovie({movieId: movieId}, airline)
 				.then( function (airlineResponse) {
-						console.log(`Movieid: ${movieId} added to airline movies: ${airlineResponse[0]}`);
+						console.log(`Movie id: ${movieId} added to airline movies: ${airline}`);
 						resolve(airlineResponse);
 				});
 		} else {
-			console.log("Movie is already in both databases")
+			console.log(`Already exists in ${airline}`)
 			resolve(movieId)
 		}
 	});
 }
 
-function isMovieInAirline (movieId, airline) {
+function movieNotInAirline (movieId, airline) {
 	return new Promise (function (resolve, reject) {
 		knex(airline)
-		.where('movieId', movieId.id)
-		.then(function (response) {
-			if (response.length === 0) {
-				resolve(false)
-			} else {
-				resolve(true)
-			}
-		})
+			.where(`${airline}.movieId`, movieId)
+			.then(function (response) {
+				resolve(!isEmpty(response))
+			})
 	})
 }
+function isEmpty (array) {
+	return array.length ===0
+}
 
- function addMovieIfNotExist (title, airline, callback) {
+
+function addMovieIfNotExist (title, airline, callback) {
 	knex('movies')
 		.where('Title', title)
 		.select('id')
 		.then( function (resp) {
-			if (resp.length === 0) {
+			if (isEmpty(resp)) {
 				getMovie([title])
-					.then(addNewMovie)
+					.then(function (movieData) {
+						addNewMovie(JSON.parse(movieData), 'movies')
+					})
 					.then(function (newId) {
-						return addMovieToAirline(newId[0], airline);
+						addMovieToAirline(newId[0], airline);
 					})		
 					.then( function (resp) {
-						console.log("New Movie Added: ", title);
+						console.log(`New Movie Added to ${airline}: ${title} `);
 						callback(null, resp);
 					});
 			} else {
-				addMovieToAirline(resp[0], airline)
+				console.log("Already exists in movies.")
+				addMovieToAirline(resp[0].id, airline)
 					.then( function (resp) {
-						console.log(`Existing movie added to airline, movie id:${resp}`);
 						callback(null, resp);
 					})
 			} 
 		})
+		.catch(handleError)
 }
 
-addMovieIfNotExist('Captain America: Civil War', 'airnewzealand', function (undefined, response) {
+function handleError (error) {
+	console.log("Error happend: ", error)
+}
+
+addMovieIfNotExist('Mission: Impossible - Ghost Protocol', 'singapore', function (undefined, response) {
+	console.log("Finished")
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var movieData = { Title: 'Captain America: Civil War',
   Year: '2016',
