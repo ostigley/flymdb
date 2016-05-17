@@ -2,8 +2,8 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTableIfNotExists('singapore', function(table) {
   	table.increments();
-  	table.string('movieId')
-  	table.timestamps()
+  	table.integer('movieId');
+  	table.timestamps();
   })
 };
 

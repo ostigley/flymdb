@@ -8,7 +8,6 @@ requestSingapore()
 	.then(getMovies)
 	.then(console.log)
 	.catch(handleError)
-	// .then(scapeSingapore)
 
 
 function handleError (error) {

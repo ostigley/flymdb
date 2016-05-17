@@ -4,7 +4,6 @@ var getPage = require('../airlines/get-page.js')
 
 module.exports = function (titlesArray) {
 	var hostname = "http://www.omdbapi.com/?"
-	// var moviePath = "t%title%&type=movie&tomatoes=true"
 
 	titlesArray.map(function(title, index) {
 		var moviePath = {
