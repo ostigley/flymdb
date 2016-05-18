@@ -36,8 +36,10 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 						callback(null, resp);
 					});
 			} else {
-				addMovieToAirline(resp[0].id, airline)
+
+				return addMovieToAirline(resp[0].id, airline)
 					.then( function (resp) {
+						// response is [airline.id], or movie.id
 						callback(null, resp);
 					})
 			} 
@@ -72,21 +74,23 @@ function addNewMovie (movieData, table) {
 				resolve(resp);
 		});
 	})
-		.then(function(resp) {
-			return resp
-		});
 }
 
 function addMovieToAirline (movieId, airline) {
 	return new Promise (function (resolve, reject) {
-		if (movieNotInAirline(movieId, airline)) {
-			addNewMovie({movieId: movieId}, airline)
-				.then( function (resp) {
-						resolve(resp);
-				});
-		} else {
-			resolve(movieId);
-		}
+		movieNotInAirline(movieId, airline)
+			.then( function (resp) {
+				if (resp) {
+					addNewMovie({movieId: movieId}, airline)
+						.then( function (resp) {
+							// Response is [airline.id], not airline.movieId
+								resolve(resp);
+						});
+				} else {
+					//Response is original movie.id
+					resolve(movieId);
+				}
+			})
 	});
 }
 
@@ -95,13 +99,14 @@ function movieNotInAirline (movieId, airline) {
 		knex(airline)
 			.where(`${airline}.movieId`, movieId)
 			.then(function (resp) {
-				resolve(!isEmpty(resp))
+				resolve(isEmpty(resp))
 			})
 	})
 }
 
 function isEmpty (array) {
-	return array.length ===0;
+	// console.log(array)
+	return array.length === 0;
 }
 
 function handleError (error) {
