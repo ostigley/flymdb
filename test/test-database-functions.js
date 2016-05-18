@@ -53,25 +53,21 @@ test ('Should return a list of movies from SingaporeAir', function (t) {
 	t.end()
 })
 
-// test ('Should return error if airline not exist', function (t) {
-// 	dbFunctions.airlineMovies('ABC', function (err, resp) {
-// 		if (err) {
-// 			t.error(err)
-// 		} 
-// 	})
-// 	t.end()
-// })
 
 //test add new movie to movie and airline database
 test('Should add a new movie title to the movie database and the airline', function (t) {
 	var newMovie = 'Back to the Future'
-	dbFunctions.addMovieIfNotExist(newMovie, 'singapore', function (error, resp) {
+	dbFunctions.addMovieIfNotExist(newMovie, 'singapore', function (error, newId) {
 		dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
+			t.ok(resp[0].id === 4, 'movie should be the 4th in the airline db')
 			t.equal(resp[0].Title, newMovie, "Added movie is in movie database")
+			t.equal(typeof newId[0], 'number', 'response from airline db is an id number')
+			dbFunctions.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
+				t.ok(movieId[0].movieId === resp[0].id, "Movie added to airline is correct movie")
+				t.end()
+			})
 		})
-	t.end()
 	})
-
 })
 
 

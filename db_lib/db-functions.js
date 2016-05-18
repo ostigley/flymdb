@@ -29,10 +29,10 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 						return addNewMovie(JSON.parse(movieData), 'movies')
 					})
 					.then(function (newId) {
-						addMovieToAirline(newId[0], airline);
+						return addMovieToAirline(newId[0], airline);
 					})		
 					.then(function (resp) {
-						// console.log(`New Movie Added to ${airline}: ${title} `);
+						// resp is [1] the airline movie id.  not the airline movieId
 						callback(null, resp);
 					});
 			} else {
@@ -48,6 +48,15 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 exports.findMovieInMovies = function (movieName, callback) {
 	knex('movies')
 		.where('Title', movieName)
+		.then( function (resp) {
+			callback(null, resp)
+		})
+}
+
+exports.findMovieInAirline = function (movieId, airline, callback) {
+	knex(airline)
+		.where('movieId', movieId)
+		.select('movieId')
 		.then( function (resp) {
 			callback(null, resp)
 		})
@@ -73,11 +82,9 @@ function addMovieToAirline (movieId, airline) {
 		if (movieNotInAirline(movieId, airline)) {
 			addNewMovie({movieId: movieId}, airline)
 				.then( function (resp) {
-						// console.log(`Movie id: ${movieId} added to airline movies: ${airline}`);
 						resolve(resp);
 				});
 		} else {
-			// console.log(`Already exists in ${airline}`);
 			resolve(movieId);
 		}
 	});
@@ -98,6 +105,6 @@ function isEmpty (array) {
 }
 
 function handleError (error) {
-	// console.log("Error happend: ", error)
-	// throw error
+	console.log("Error happend: ", error)
+	throw error
 }
