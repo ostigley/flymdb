@@ -14,7 +14,8 @@ exports.airlineMovies = function (airline, callback) {
 		.join(airline, 'movies.id', `${airline}.movieId`)
 		.then( function (resp) {
 			callback(null, resp);
-		});
+		})
+		.catch(handleError)
 };
 
 exports.addMovieIfNotExist = function (title, airline, callback) {
@@ -25,17 +26,16 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 			if (isEmpty(resp)) {
 				getMovie([title])
 					.then(function (movieData) {
-						addNewMovie(JSON.parse(movieData), 'movies')
+						return addNewMovie(JSON.parse(movieData), 'movies')
 					})
 					.then(function (newId) {
 						addMovieToAirline(newId[0], airline);
 					})		
-					.then( function (resp) {
-						console.log(`New Movie Added to ${airline}: ${title} `);
+					.then(function (resp) {
+						// console.log(`New Movie Added to ${airline}: ${title} `);
 						callback(null, resp);
 					});
 			} else {
-				console.log("Already exists in movies.")
 				addMovieToAirline(resp[0].id, airline)
 					.then( function (resp) {
 						callback(null, resp);
@@ -43,6 +43,14 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 			} 
 		})
 		.catch(handleError)
+}
+
+exports.findMovieInMovies = function (movieName, callback) {
+	knex('movies')
+		.where('Title', movieName)
+		.then( function (resp) {
+			callback(null, resp)
+		})
 }
 
 // ---------------helpers---------------------//
@@ -54,7 +62,10 @@ function addNewMovie (movieData, table) {
 		.then(function (resp) {
 				resolve(resp);
 		});
-	});
+	})
+		.then(function(resp) {
+			return resp
+		});
 }
 
 function addMovieToAirline (movieId, airline) {
@@ -62,11 +73,11 @@ function addMovieToAirline (movieId, airline) {
 		if (movieNotInAirline(movieId, airline)) {
 			addNewMovie({movieId: movieId}, airline)
 				.then( function (resp) {
-						console.log(`Movie id: ${movieId} added to airline movies: ${airline}`);
+						// console.log(`Movie id: ${movieId} added to airline movies: ${airline}`);
 						resolve(resp);
 				});
 		} else {
-			console.log(`Already exists in ${airline}`);
+			// console.log(`Already exists in ${airline}`);
 			resolve(movieId);
 		}
 	});
@@ -87,5 +98,6 @@ function isEmpty (array) {
 }
 
 function handleError (error) {
-	console.log("Error happend: ", error)
+	// console.log("Error happend: ", error)
+	// throw error
 }
