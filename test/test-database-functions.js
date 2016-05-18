@@ -1,45 +1,55 @@
 var redtape = require('redtape')
-var dbConfig = require('./db-config')
-var knex = dbConfig.knex
-var config = dbConfig.config
-var dbFunctions = require('db-functions.js')
-
+var dbConfig = require('./db-config.js')
+var knex = dbConfig
+// var config = dbConfig.config
+var dbFunctions = require('../db_lib/db-functions.js')
 
 //Prepare database for testing: 
 
 var test = redtape({
 	beforeEach: function(callback) {
-		return knex.migrate.latest(config)
-	}
-	.then(function (response) {
-		seeds required for show movies for airline function
-
-		callback?
-	}), 
+		return knex.migrate.latest()
+			.then(function () {
+				return knex.seed.run()
+				.then( function () {
+					console.log("Migrated and seed db's")
+					callback()
+				})
+			})
+	},
 
 	afterEach: function (callback) {
-		return anything need to be done here?
+		return knex.migrate.rollback()
+			.then(function () {
+				console.log("Rolledback after test")
+				callback()
+			})
 	}
 })
 
 
 // test show movies for airlinen function
-test ('Should return a list of movies one airline is showing', function (t) {
+test ('Should return a list of movies from airNz', function (t) {
 	dbFunctions.airlineMovies('airnewzealand', function (error, resp) {
 		if (error) {
 			console.log(error)
 		} else {
-			t.equal(resp.length, 1, "one movie in air new zealand")
-			t.equal(resp[0].Title,'Captain America: Civil War', "movie in air new zealand is correct" )
+			t.equal(resp.length, 2, "Returns air nz movies")
+			t.deepEqual(resp[0].Title,'Captain America: Civil War', "movie in air new zealand is correct" )
 		}
-		t.end()
 	})
+	t.end()
 })
 
-
-
-test addmovie to db if not already exist: 
-	-add new movie
-	-add existing movie to airline
-	-add existing movie to airline that already has it. 
+test ('Should return a list of movies from SingaporeAir', function (t) {
+	dbFunctions.airlineMovies('singapore', function (error, resp) {
+		if (error) {
+			console.log(error)
+		} else {
+			t.equal(resp.length, 2, "Returns air nz movies")
+			t.deepEqual(resp[0].Title,'X-Men: The Last Stand', "movie in air new zealand is correct" )
+		}
+	})
+	t.end()
+})
 

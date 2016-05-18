@@ -1,11 +1,13 @@
 var knex = require('knex')
 
 var config =  {
-	directory: __dirname + '/migrations',
+	client: 'sqlite3',
+    connection: {
+	    filename: "./flymydb.sqlite"
+	 },
+	useNullAsDefault: true,
+	directory: __dirname + '../migrations/',
 	tableName: 'knex_migrations'
 }
 
-module.exports = {
-	config: config,
-	knex: knex
-}
+module.exports = knex(config)

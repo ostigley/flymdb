@@ -1,6 +1,5 @@
 
 var knex = require('knex')({
-    client: 'postgresql',
     client: 'sqlite3',
     connection: {
     filename: "./flymydb.sqlite"
