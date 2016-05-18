@@ -7,6 +7,7 @@ module.exports= function() {
 	var urls = urlsArray();
 	return Promise.all(urls.map(getPage))
 		.then( function(htmlArray) {
+			console.log("123 456 567???")
 			return htmlArray.reduce(function(a,b) {
 				return a + b
 			},"")

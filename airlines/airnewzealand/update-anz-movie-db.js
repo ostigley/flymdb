@@ -5,16 +5,20 @@ var noRepeats = require('./no-airNz-repeats.js')
 
 // get movies from air new zealand, send callback as 
 
+module.exports = function () {
+	return requestAnz()
+		.then(scrapeMovies)
+		.then(noRepeats)
+		.then(getMovieRatings)
+		.then(console.log)
+		.catch(handleError)
+}
 
-requestAnz()
-	.then(scrapeMovies)
-	.then(noRepeats)
-	.then(getMovieRatings)
-	.then(console.log)
-	.catch(handleError)
+
 
 function handleError (error) {
 	console.log("Error happend: ", error)
 }
+
 
 
