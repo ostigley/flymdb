@@ -33,6 +33,7 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 					})		
 					.then(function (resp) {
 						// resp is [1] the airline movie id.  not the airline movieId
+						console.log("Movie added: ", title)
 						callback(null, resp);
 					});
 			} else {
@@ -40,6 +41,7 @@ exports.addMovieIfNotExist = function (title, airline, callback) {
 				return addMovieToAirline(resp[0].id, airline)
 					.then( function (resp) {
 						// response is [airline.id], or movie.id
+						console.log("Movie alredy in db: ", title)
 						callback(null, resp);
 					})
 			} 
