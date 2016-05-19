@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "clear && tape test/*.js | tap-spec"
+    "test": "clear && tape test/**/*.js | tap-spec"
   },
   "repository": {
     "type": "git",

@@ -4,26 +4,26 @@ var urlsArray = require('./data/urls')
 
 module.exports= function() {
 	console.log("Requesting air new zealand")
-	var urls = urlsArray();
-	return Promise.all(urls.map(getPage))
-		.then( function(htmlArray) {
-			console.log("123 456 567???")
-			return htmlArray.reduce(function(a,b) {
-				return a + b
-			},"")
-		})
-}
+// 	var urls = urlsArray();
+// 	return Promise.all(urls.map(getPage))
+// 		.then( function(htmlArray) {
+// 			return htmlArray.reduce(function(a,b) {
+// 				return a + b
+// 			},"")
+// 		})
 	// for TESTING!!!!
-	// var htmlArray = require('../../test/data/airNzhtmlArray.js')
-	 // return new Promise ( function (resolve, reject) {
-		// var htmlString = htmlArray.reduce(function(a,b) {
-		// 			return a + b
-		// 		},"")
-	 // 	resolve(htmlString)
-	 // })
+	var htmlArray = require('../../test/data/airNzhtmlArray.js')
+	 return new Promise ( function (resolve, reject) {
+		var htmlString = htmlArray.reduce(function(a,b) {
+					return a + b
+				},"")
+		console.log(htmlString.length)
+	 	resolve(htmlString)
+	 })
 	
 
 
+}
 
 
 

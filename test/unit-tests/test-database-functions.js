@@ -1,27 +1,25 @@
 var redtape = require('redtape')
-var dbConfig = require('./db-config.js')
-var knex = dbConfig
-// var config = dbConfig.config
-var dbFunctions = require('../db_lib/db-functions.js')
+var knexConfig = require('../../knexfile.js').development
+var knex = require('knex')(knexConfig)
+var dbFunctions = require('../../db_lib/db-functions.js')
 
 //Prepare database for testing: 
-
 var test = redtape({
 	beforeEach: function(callback) {
-		return knex.migrate.latest()
+		knex = require('knex')(knexConfig)
+		return knex.migrate.latest(knexConfig)
 			.then(function () {
-				return knex.seed.run()
+				return knex.seed.run(knexConfig)
 				.then( function () {
-					// console.log("Migrated and seed db's")
 					callback()
 				})
 			})
 	},
 
 	afterEach: function (callback) {
-		return knex.migrate.rollback()
+		return knex.migrate.rollback(knexConfig)
 			.then(function () {
-				// console.log("Rolledback after test")
+				knex.destroy()
 				callback()
 			})
 	}
@@ -36,9 +34,9 @@ test ('Should return a list of movies from airNz', function (t) {
 		} else {
 			t.equal(resp.length, 2, "Returns air nz movies")
 			t.deepEqual(resp[0].Title,'Captain America: Civil War', "Movie in air new zealand is correct" )
+			t.end()
 		}
 	})
-	t.end()
 })
 
 test ('Should return a list of movies from SingaporeAir', function (t) {
@@ -46,11 +44,11 @@ test ('Should return a list of movies from SingaporeAir', function (t) {
 		if (error) {
 			console.log(error)
 		} else {
-			t.equal(resp.length, 2, "Returns air nz movies")
+				t.equal(resp.length, 2, "Returns air nz movies")
 			t.deepEqual(resp[0].Title,'X-Men: The Last Stand', "Movie in air new zealand is correct" )
+			t.end()
 		}
 	})
-	t.end()
 })
 
 
@@ -94,9 +92,9 @@ test('Should add movie already in DB in to Singapore DB', function (t) {
 			dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
 				dbFunctions.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
 					t.ok(resp[0].id === movieId[0].movieId, 'Movie added to airline is correct movie')
+					t.end()
 				})
 			})
-		t.end()
 	})
 })
 
@@ -107,9 +105,9 @@ test('Should add movie already in DB in to Air NZ DB', function (t) {
 			dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
 				dbFunctions.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
 					t.ok(resp[0].id === movieId[0].movieId, '16 Movie added to airline is correct movie')
+					t.end()
 				})
 			})
-		t.end()
 	})
 })
 
@@ -121,12 +119,17 @@ test('Should not add movie already in both databases: Air NZ', function (t) {
 				dbFunctions.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
 					t.ok(resp.length === 1, "Only one entry in movies db for this movie")
 					t.ok(movieId.length === 1, "Only one entry in airline db for this movie")
-					t.ok(resp[0].id === movieId[0].movieId, 'Movie in airline is the same one in the database, and has not been added twise.')
+					t.ok(resp[0].id === movieId[0].movieId, 'Movie in airline is the same one in the database, and has not been added twice.')
+					t.end()
 				})
 			})
-		t.end()
 	})
 })
+
+
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 var test = require('tape');
-var requestAirNewZealand = require('../airlines/airnewzealand/requestAirNewZealand.js');
-var scrapeMovies = require('../airlines/airnewzealand/scrape-movies.js')
-var noRepeatsAirNz = require('../airlines/airnewzealand/no-airNz-repeats.js')
+var requestAirNewZealand = require('../../airlines/airnewzealand/requestAirNewZealand.js');
+var scrapeMovies = require('../../airlines/airnewzealand/scrape-movies.js')
+var noRepeatsAirNz = require('../../airlines/airnewzealand/no-airNz-repeats.js')
 
 test("Request Air NZ and retrieve movies", function(t) {
   var movies = []
