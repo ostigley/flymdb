@@ -10,7 +10,8 @@ var test = redtape({
 		knex = require('knex')(knexConfig)
 		return knex.migrate.latest(knexConfig)
 			.then(function () {
-				updateAirNewZealand()
+				console.log("migrated db's")
+				return updateAirNewZealand()
 					.then( function () {
 						callback()
 					})
@@ -20,7 +21,7 @@ var test = redtape({
 	afterEach: function (callback) {
 		return knex.migrate.rollback(knexConfig)
 			.then(function () {
-				knex.destroy()
+				// knex.destroy()
 				callback()
 			})
 	}

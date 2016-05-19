@@ -19,7 +19,6 @@ exports.airlineMovies = function (airline, callback) {
 };
 
 exports.addMovieIfNotExist = function (title, airline, callback) {
-	// console.log("addmovies function cl, title list", title)
 	knex('movies')
 		.where('Title', title)
 		.select('id')

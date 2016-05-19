@@ -2,7 +2,7 @@ var requestAnz = require('./requestAirNewZealand.js')
 var scrapeMovies = require('./scrape-movies.js')
 var getMovieRatings = require('./../../movie-data/get-movies.js')
 var noRepeats = require('./no-airNz-repeats.js')
-var dbFunctions = require('../../db_lib/db-functions.js')
+var db = require('../../db_lib/db-functions.js')
 
 // get movies from air new zealand, send callback as 
 
@@ -12,11 +12,17 @@ module.exports = function () {
 		.then(noRepeats)
 		// .then(getMovieRatings)
 		.then(function (movieTitlesArray) {
-			return Promise.all(movieTitlesArray)
-				.then(function(responseArray) {
-					console.log("Air New Zealand scrapped, titles added to db's")		
+			movieTitlesArray.map(function(movie) {
+				return new Promise (function (resolve, reject) {
+					db.addMovieIfNotExist(movie,'airnewzealand', function(error, response) {
+						if (error) {
+							console.log("error in update nz", error)
+						} else {
+							resolve(console.log("Air New Zealand scrapped, titles added to db's"))		
+						}
+					})
 				})
-			
+			})
 		})
 		.catch(handleError)
 }
@@ -26,6 +32,5 @@ module.exports = function () {
 function handleError (error) {
 	console.log("Error happend: ", error)
 }
-
 
 
