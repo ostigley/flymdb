@@ -5,7 +5,6 @@ var noRepeatsAirNz = require('../../airlines/airnewzealand/no-airNz-repeats.js')
 
 test("Request Air NZ and retrieve movies", function(t) {
   var movies = []
-  var count = 0
     return requestAirNewZealand()
       .then(scrapeMovies)
       .then(noRepeatsAirNz)

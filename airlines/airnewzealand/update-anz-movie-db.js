@@ -17,7 +17,6 @@ module.exports = function () {
 		return requestAnz()
 			.then(scrapeMovies)
 			.then(noRepeats)
-			// .then(getMovieRatings)
 			.then(function (movieTitlesArray) {
 				Promise.all(movieTitlesArray.map(function(movie) {
 					return new Promise (function (resolve, reject) {
