@@ -30,7 +30,7 @@ module.exports = function () {
 				}))
 				.then(function() {
 					console.log("*******\n\nFinished Updating Singapore \n\n*******\n\n")
-					process.exit()
+					return
 				})
 			})
 

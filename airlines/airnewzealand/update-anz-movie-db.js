@@ -31,7 +31,7 @@ module.exports = function () {
 				}))
 				.then(function() {
 					console.log("*******\n\nFinished Updating Air New Zealand\n\n*******\n\n")
-					process.exit()
+					return
 				})
 			})
 
