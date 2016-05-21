@@ -20,7 +20,7 @@ exports.airlineMovies = function (airline, callback) {
 
 exports.addMovieIfNotExist = function (title, airline, callback) {
 	knex('movies')
-		.where('Title', title)
+		.where('Title', 'like', title) //like introduced to cater for case sensitive bugs
 		.select('id')
 		.then( function (resp) {
 			if (isEmpty(resp)) {
