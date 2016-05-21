@@ -11,18 +11,19 @@ module.exports= function() {
 				return a + b
 			},"")
 		})
-}
 	// for TESTING!!!!
 	// var htmlArray = require('../../test/data/airNzhtmlArray.js')
-	 // return new Promise ( function (resolve, reject) {
-		// var htmlString = htmlArray.reduce(function(a,b) {
-		// 			return a + b
-		// 		},"")
-	 // 	resolve(htmlString)
-	 // })
+	//  return new Promise ( function (resolve, reject) {
+	// 	var htmlString = htmlArray.reduce(function(a,b) {
+	// 				return a + b
+	// 			},"")
+	// 	console.log(htmlString.length)
+	//  	resolve(htmlString)
+	//  })
 	
 
 
+}
 
 
 
