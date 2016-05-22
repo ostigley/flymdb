@@ -1,3 +1,17 @@
+extends layout
+
 block body
 
-p hello world
+
+	div.form
+		form(name="selectDetails", action="/", method="post", id="selectDetails")
+			label Select Airline:
+			select(name="airline", form="selectDetails", onchange="selectDateChangeHandler(this)")
+				option(value="Please Select")
+				option(value="airnewzealand") Air New Zealand
+				option(value="singapore") Singapore Air
+			div.dateSelect
+				label Month of Travel:
+				select#date-options(name="date", form="selectDetails")
+
+			input.submit-button(type="submit", name="submit" value="Add me")				
