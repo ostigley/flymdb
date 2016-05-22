@@ -1,6 +1,9 @@
 extends layout
 block body
 
-h1 #{title}
 
-p hello world
+	p hello world
+
+	ul
+		each val in movies
+			li= val.Title

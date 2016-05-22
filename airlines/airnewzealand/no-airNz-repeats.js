@@ -7,7 +7,7 @@ module.exports = function removeRepeats (possibleMovies) {
 			return removeRepeats(possibleMovies);
 		}
 	}
-	var extras = [" ", undefined, 'We don\'t have any content matching your selection']
+	var extras = [" ", undefined, 'We don\'t have any content matching your selection', '11.22.63']
 	extras.map(function(extra) {
 		possibleMovies.splice(possibleMovies.indexOf(extra), 1)
 	})

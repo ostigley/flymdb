@@ -30,7 +30,7 @@ function singaporeDates() {
 	var singaporeDateOptions = ["This month", "Next month"]
 	singaporeDateOptions.map(function (date){
 		var option = document.createElement("option")
-		option.value = date.replace(" ","")
+		option.value = date.replace(" ","").toLowerCase()
 		option.text = date
 		dateOptions.appendChild(option)		
 	})
