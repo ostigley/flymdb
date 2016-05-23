@@ -27,6 +27,7 @@ function omDB(uri) {
           var title =  qs.parse(uri)['http://www.omdbapi.com/?t']
           body = emptyEntry
           body.Title = title
+          body.Poster = "http://one-europe.info/user/files/Santino%20Santinelli/Flying_Film_Reel.jpg"
           resolve(JSON.stringify(body))
         } else {
           resolve(body)

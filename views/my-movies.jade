@@ -2,8 +2,27 @@ extends layout
 block body
 
 
-	p hello world
+	h4 Here are your movies
 
-	ul
-		each val in movies
-			li= val.Title
+	div.row
+		div.movies-container
+			each val in movies
+				div.movie
+					div.poster
+						img(src="#{val.Poster}")
+					div.details
+						ul.movieDetails
+							li.title 
+								a(href="http://www.imdb.com/title/#{val.imdbID}", target="_blank") #{val.Title}
+							li.rating <strong>IMDB Rating:</strong> #{val.imdbRating}
+							li.genre <strong>Genre:</strong> #{val.Genre}
+							li.synopsis(onclick="showHide(this)") <strong>Synopsis: ...</strong>
+								p.plot.hide #{val.Plot}
+		input(type='hidden', id='movieData', value="#{movies}")
+
+	script(type="text/javascript" src="../scripts/mymovies.js")
+
+
+
+
+
