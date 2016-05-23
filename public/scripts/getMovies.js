@@ -1,6 +1,7 @@
 var selectDetailsForm
 var dateSelect
 var dateOptions
+var movies
 window.onload = function () {
 	selectDetailsForm = document.getElementById('selectDetails')
 	dateSelect = document.querySelector('.dateSelect')
@@ -40,11 +41,16 @@ function airnewzealandDates() {
 	dateSelect.classList.remove('show-hide')
 }
 
-var movies = {}
 function getMovies (params) {
 	$.ajax({
 		url: "/movies",
-		success: renderMovies(result),
+		async: true,
+		headers: {
+			airline: params
+		},
+		success: function (data) {
+			renderMovies(data)
+		},
 		type: 'GET'
 	})
 }
@@ -53,15 +59,11 @@ function getMovies (params) {
 
 function renderMovies (result) {
 	//this function will create and add elements to the DOM to display movies. 
-	console.log(result)	
+	console.log("render movies result, ", result.movies)	
 	result.movies.map(function (movie) {
-		var newEntry = generateMovie(movie)
-
-
-		
-
+		var newMovie = generateMovie(movie)
+		document.querySelector('.movies-container').appendChild(newMovie)
 	})
-
 }
 
 function sortMovies () {}
@@ -69,28 +71,30 @@ function sortMovies () {}
 
 function generateMovie (movie) {
 	var movieDiv = document.createElement('div')
-	movieDiv.classList.add('movie')
 	var posterDiv = document.createElement('div')
-	posterDiv.classList.add('poster')
-	posterDiv.innerHTML= '<img src="https://placekitten.com/g/300/450">' //or movie.Poster
 	var detailsDiv = document.createElement('div')
-	detailsDiv.classList.add('details')
 	var detailsList = document.createElement('ul')
-	detailsList.classList.add('movieDetails')
 	var titleLi = document.createElement('li')
-	titleLi.classList.add('title')
-	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/${movie.imdbID}">${movie.Title}</a>`
 	var ratingLi = document.createElement('li')
-	ratingLi.classList.add('rating')
-	ratingLi.innerHTML = '<strong> IMDB Rating:</strong> ' + movie.imdbRating
 	var genreLi = document.createElement('li')
-	genreLi.classList.add('genre')
 	var synopsisLi = document.createElement('li')
-	//add genre content
-	synopsisLi.classList.add('synopsis')
 	var plotP = document.createElement('p')
+
+	movieDiv.classList.add('movie')
+	posterDiv.classList.add('poster')
+	detailsDiv.classList.add('details')
+	detailsList.classList.add('movieDetails')
+	titleLi.classList.add('title')
+	ratingLi.classList.add('rating')
+	genreLi.classList.add('genre')
+	synopsisLi.classList.add('synopsis')
 	plotP.classList.add('plot', 'hide')
-	//add p content
+
+	posterDiv.innerHTML= `<img src=${movie.Poster}>`
+	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/${movie.imdbID}">${movie.Title}</a>`
+	ratingLi.innerHTML = '<strong>IMDB Rating:</strong> ' + movie.imdbRating
+	genreLi.innerHTML = '<strong>Genre: </strong>' + movie.Genre
+	plotP.innerHTML = movie.Plot
 
 	movieDiv.appendChild(posterDiv)
 	movieDiv.appendChild(detailsDiv)

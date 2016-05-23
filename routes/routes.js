@@ -7,11 +7,9 @@ router.get('/', function (req, res) {
 })
 
 
-router.post('/', function (req, res) {
-	movies(req.body.airline, function (error, response) {
-		console.log(response)
-		console.log(typeof response)
-		res.render('my-movies', {movies: response})
+router.get('/movies', function (req, res) {
+	movies(req.headers.airline, function (error, response) {
+		res.json({movies: response})
 	})	
 })
 
