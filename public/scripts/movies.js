@@ -1,45 +1,4 @@
-var selectDetailsForm
-var dateSelect
-var dateOptions
 var movies
-window.onload = function () {
-	selectDetailsForm = document.getElementById('selectDetails')
-	dateSelect = document.querySelector('.dateSelect')
-	dateOptions = document.querySelector('#date-options')
-}
-
-
-var airnewzealandDateOptions = []
-
-
-function selectDateChangeHandler (airlineSelection) {
-	switch(airlineSelection.value) {
-		case 'airnewzealand':
-			airnewzealandDates()
-			break;
-		case 'singapore':
-			singaporeDates()
-			break;
-		case 'Please Select':
-			break;
-	}
-
-}
-
-function singaporeDates() {
-	dateSelect.classList.toggle('show-hide')
-	var singaporeDateOptions = ["This month", "Next month"]
-	singaporeDateOptions.map(function (date){
-		var option = document.createElement("option")
-		option.value = date.replace(" ","").toLowerCase()
-		option.text = date
-		dateOptions.appendChild(option)		
-	})
-}
-
-function airnewzealandDates() {
-	dateSelect.classList.remove('show-hide')
-}
 
 function getMovies () {
 	var params = document.getElementById('airline').value
@@ -55,32 +14,26 @@ function getMovies () {
 		type: 'GET'
 	})
 }
-
+var synopsis
 
 
 function renderMovies (result) {
 	//this function will create and add elements to the DOM to display movies. 
-	result.movies.map(function (movie) {
+	movies = result.movies
+	sortMovies(movies)
+	movies.map(function (movie) {
 		var newMovie = generateMovie(movie)
 		document.querySelector('.movies-container').appendChild(newMovie)
 	})
 
-
 };
 
-function showHide (element){
-	var plots = element.children;
-	console.log("Tuesday")
-    plots["1"].classList.toggle('hide');
-};
-
-var synopsis = document.querySelectorAll('.synopsis')
-synopsis.onclick = showHide(this)
-
-
-
-function sortMovies () {}
-
+// var synopsis = document.getElementsByClassName('synopsis')
+// synopsis.onclick = showHide(this)
+// function showHide (element){
+// 	console.log(element)
+// 	element.children.classList.toggle('hide')
+// };
 
 function generateMovie (movie) {
 	var movieDiv = document.createElement('div')
@@ -101,7 +54,7 @@ function generateMovie (movie) {
 	ratingLi.classList.add('rating')
 	genreLi.classList.add('genre')
 	synopsisLi.classList.add('synopsis')
-	plotP.classList.add('plot', 'hide')
+	plotP.classList.add('plot')
 
 	posterDiv.innerHTML= `<img src="https://placekitten.com/g/300/450">`
 	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/title/${movie.imdbID}">${movie.Title}</a>`
@@ -121,5 +74,18 @@ function generateMovie (movie) {
 
 	return movieDiv
 
+}
+function sortMovies (moviesArray) {
+	moviesArray.sort(function (a, b) {
+		if (a.imdbRating)
+		else if (a.imdbRating < b.imdbRating ) {
+		    return 1;
+		} else if (a.imdbRating > b.imdbRating ) {
+		  return -1;
+		} else {
+			return 0;
+		}
+	})
+	
 }
 
