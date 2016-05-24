@@ -41,7 +41,8 @@ function airnewzealandDates() {
 	dateSelect.classList.remove('show-hide')
 }
 
-function getMovies (params) {
+function getMovies () {
+	var params = document.getElementById('airline').value
 	$.ajax({
 		url: "/movies",
 		async: true,
@@ -59,12 +60,24 @@ function getMovies (params) {
 
 function renderMovies (result) {
 	//this function will create and add elements to the DOM to display movies. 
-	console.log("render movies result, ", result.movies)	
 	result.movies.map(function (movie) {
 		var newMovie = generateMovie(movie)
 		document.querySelector('.movies-container').appendChild(newMovie)
 	})
-}
+
+
+};
+
+function showHide (element){
+	var plots = element.children;
+	console.log("Tuesday")
+    plots["1"].classList.toggle('hide');
+};
+
+var synopsis = document.querySelectorAll('.synopsis')
+synopsis.onclick = showHide(this)
+
+
 
 function sortMovies () {}
 
@@ -90,10 +103,11 @@ function generateMovie (movie) {
 	synopsisLi.classList.add('synopsis')
 	plotP.classList.add('plot', 'hide')
 
-	posterDiv.innerHTML= `<img src=${movie.Poster}>`
-	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/${movie.imdbID}">${movie.Title}</a>`
+	posterDiv.innerHTML= `<img src="https://placekitten.com/g/300/450">`
+	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/title/${movie.imdbID}">${movie.Title}</a>`
 	ratingLi.innerHTML = '<strong>IMDB Rating:</strong> ' + movie.imdbRating
 	genreLi.innerHTML = '<strong>Genre: </strong>' + movie.Genre
+	synopsisLi.innerHTML = '<strong>Synopsis: ...</srtong>'
 	plotP.innerHTML = movie.Plot
 
 	movieDiv.appendChild(posterDiv)
@@ -101,6 +115,7 @@ function generateMovie (movie) {
 	detailsDiv.appendChild(detailsList)
 	detailsList.appendChild(titleLi)
 	detailsList.appendChild(ratingLi)
+	detailsList.appendChild(genreLi)
 	detailsList.appendChild(synopsisLi)
 	synopsisLi.appendChild(plotP)
 

@@ -4,9 +4,9 @@ block body
 
 
 	div.form
-		form(name="selectDetails", action="/", method="post", id="selectDetails")
+		form(name="selectDetails", id="selectDetails")
 			label Select Airline:
-			select(name="airline", form="selectDetails", onchange="selectDateChangeHandler(this)")
+			select(name="airline", form="selectDetails", onchange="selectDateChangeHandler(this)", id="airline")
 				option(value="Please Select")
 				option(value="airnewzealand") Air New Zealand
 				option(value="singapore") Singapore Air
@@ -14,6 +14,6 @@ block body
 				label Month of Travel:
 				select#date-options(name="date", form="selectDetails")
 
-			input.submit-button(type="submit", name="submit" value="Add me")
+			input.submit-button(type="button", value="Find Movies", onclick="getMovies()")
 	div.row
-		div.movies-container				
+		div.movies-container
