@@ -1,5 +1,5 @@
 var movies
-
+var genres
 function getMovies () {
 	var params = document.getElementById('airline').value
 	$.ajax({
@@ -18,9 +18,12 @@ var synopsis
 
 
 function renderMovies (result) {
-	//this function will create and add elements to the DOM to display movies. 
 	movies = result.movies
-	sortMovies(movies)
+	genres = getGenres(movies)
+	sortMoviesRating(movies)
+	//this function will create and add elements to the DOM to display movies. 
+	showfunctionButtons()
+
 	movies.map(function (movie) {
 		var newMovie = generateMovie(movie)
 		document.querySelector('.movies-container').appendChild(newMovie)
@@ -75,10 +78,9 @@ function generateMovie (movie) {
 	return movieDiv
 
 }
-function sortMovies (moviesArray) {
+function sortMoviesRating (moviesArray) {
 	moviesArray.sort(function (a, b) {
-		if (a.imdbRating)
-		else if (a.imdbRating < b.imdbRating ) {
+		if (a.imdbRating < b.imdbRating ) {
 		    return 1;
 		} else if (a.imdbRating > b.imdbRating ) {
 		  return -1;
@@ -86,6 +88,6 @@ function sortMovies (moviesArray) {
 			return 0;
 		}
 	})
-	
+
 }
 
