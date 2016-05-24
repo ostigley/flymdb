@@ -26,6 +26,9 @@ function renderMovies (result) {
 
 	movies.map(function (movie) {
 		var newMovie = generateMovie(movie)
+		getGenres([movie]).map(function(genre) {
+			if (genre !== "" & genre !== "N/A") newMovie.classList.add(genre)
+		})
 		document.querySelector('.movies-container').appendChild(newMovie)
 	})
 
