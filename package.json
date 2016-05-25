@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "start": "node flymdb.js",
     "fly": "clear && nodemon flymdb.js",
     "test": "clear && tape test/**/*.js | tap-spec",
     "airlines": "clear && node airlines/update.js"
