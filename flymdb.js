@@ -18,6 +18,6 @@ app.set('view engine', 'jade')
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname+'/public'));
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
 
 
