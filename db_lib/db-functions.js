@@ -89,11 +89,13 @@ module.exports = function (knex) {
 
 	function addNewMovie (movieData, table) {
 		return knex(table)
+			.returning('id')
 			.insert(movieData)
 	}
 
 	function addNewToMovies (movieData) {
 		return knex('movies')
+			.returning('id')
 			.insert(movieData)
 	}
 

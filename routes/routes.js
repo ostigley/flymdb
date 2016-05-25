@@ -1,6 +1,11 @@
 var express = require('express')
 var router = express.Router()
-var movies = require('../db_lib/db-functions.js').airlineMovies
+
+var knexConfig = require('../knexfile.js')[process.env.NODE_ENV] 
+var knex = require('knex')(knexConfig)
+var dbFunctions = require('../db_lib/db-functions.js')  // pulls in our db functions
+var movies = dbFunctions(knex).airlineMovies
+
 
 router.get('/', function (req, res) {
 	res.render('index')

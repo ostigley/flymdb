@@ -8,9 +8,7 @@ function getMovies () {
 		headers: {
 			airline: params
 		},
-		success: function (data) {
-			renderMovies(data)
-		},
+		success: renderMovies,
 		type: 'GET'
 	})
 }
