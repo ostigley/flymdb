@@ -1,15 +1,17 @@
 var redtape = require('redtape')
-var knexConfig = require('../../knexfile.js').development
-var knex = require('knex')(knexConfig)
-var dbFunctions = require('../../db_lib/db-functions.js')
+
+var knexConfig = require('../../knexfile.js').test  // declaires db environment
+var knex = require('knex')(knexConfig) // sets up knex with environment config. 
+
+var dbFunctions = require('../../db_lib/db-functions.js')  // pulls in our db functions
+var db = dbFunctions(knex)  // decalres our db functions with knex environment
 
 //Prepare database for testing: 
 var test = redtape({
 	beforeEach: function(callback) {
-		knex = require('knex')(knexConfig)
-		return knex.migrate.latest(knexConfig)
+		return knex.migrate.latest()
 			.then(function () {
-				return knex.seed.run(knexConfig)
+				return knex.seed.run()
 				.then( function () {
 					callback()
 				})
@@ -17,9 +19,9 @@ var test = redtape({
 	},
 
 	afterEach: function (callback) {
-		return knex.migrate.rollback(knexConfig)
+		return knex.migrate.rollback()
 			.then(function () {
-				knex.destroy()
+				// knex.destroy()
 				callback()
 			})
 	}
@@ -28,7 +30,7 @@ var test = redtape({
 
 // test show movies for airlinen function
 test ('Should return a list of movies from airNz', function (t) {
-	dbFunctions.airlineMovies('airnewzealand', function (error, resp) {
+	db.airlineMovies('airnewzealand', function (error, resp) {
 		if (error) {
 			console.log(error)
 		} else {
@@ -40,7 +42,7 @@ test ('Should return a list of movies from airNz', function (t) {
 })
 
 test ('Should return a list of movies from SingaporeAir', function (t) {
-	dbFunctions.airlineMovies('singapore', function (error, resp) {
+	db.airlineMovies('singapore', function (error, resp) {
 		if (error) {
 			console.log(error)
 		} else {
@@ -55,12 +57,12 @@ test ('Should return a list of movies from SingaporeAir', function (t) {
 //test add new movie to movie and airline database
 test('Should add a new movie title to the movie database and the singapore DB', function (t) {
 	var newMovie = 'Back to the Future'
-	dbFunctions.addMovieIfNotExist(newMovie, 'singapore', function (error, newId) {
-		dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
+	db.addMovieIfNotExist(newMovie, 'singapore', function (error, newId) {
+		db.findMovieInMovies(newMovie, function (error, resp) {
 			t.ok(resp[0].id === 4, 'Movie should be the 4th in the airline db')
 			t.equal(resp[0].Title, newMovie, "Added movie is in movie database")
 			t.equal(typeof newId[0], 'number', 'Response from airline db is an id number')
-			dbFunctions.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
+			db.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
 				t.ok(movieId[0].movieId === resp[0].id, "Movie added to airline is correct movie")
 				t.end()
 			})
@@ -71,12 +73,12 @@ test('Should add a new movie title to the movie database and the singapore DB', 
 
 test('Should add a new movie title to the movie database and the airNZ DB', function (t) {
 	var newMovie = 'Back to the Future'
-	dbFunctions.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, newId) {
-		dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
+	db.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, newId) {
+		db.findMovieInMovies(newMovie, function (error, resp) {
 			t.ok(resp[0].id === 4, 'Movie should be the 4th in the airline db')
 			t.equal(resp[0].Title, newMovie, "Added movie is in movie database")
 			t.equal(typeof newId[0], 'number', 'Response from airline db is an id number')
-			dbFunctions.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
+			db.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
 				t.ok(movieId[0].movieId === resp[0].id, "Movie added to airline is correct movie")
 				t.end()
 			})
@@ -87,10 +89,10 @@ test('Should add a new movie title to the movie database and the airNZ DB', func
 
 test('Should add movie already in DB in to Singapore DB', function (t) {
 	var newMovie = 'Captain America: Civil War'  //already in db, but not singapore
-	dbFunctions.addMovieIfNotExist(newMovie, 'singapore', function (error, resp) {
+	db.addMovieIfNotExist(newMovie, 'singapore', function (error, resp) {
 		t.ok(typeof resp[0] === 'number', "Response from airline db is an id number")
-			dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
-				dbFunctions.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
+			db.findMovieInMovies(newMovie, function (error, resp) {
+				db.findMovieInAirline(resp[0].id, 'singapore', function (error, movieId) {
 					t.ok(resp[0].id === movieId[0].movieId, 'Movie added to airline is correct movie')
 					t.end()
 				})
@@ -100,10 +102,10 @@ test('Should add movie already in DB in to Singapore DB', function (t) {
 
 test('Should add movie already in DB in to Air NZ DB', function (t) {
 	var newMovie = 'Youth'  //already in db, but not singapore
-	dbFunctions.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
+	db.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
 		t.ok(typeof resp[0] === 'number', "Response from airline db is an id number")
-			dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
-				dbFunctions.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
+			db.findMovieInMovies(newMovie, function (error, resp) {
+				db.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
 					t.ok(resp[0].id === movieId[0].movieId, '16 Movie added to airline is correct movie')
 					t.end()
 				})
@@ -113,10 +115,10 @@ test('Should add movie already in DB in to Air NZ DB', function (t) {
 
 test('Should not add movie already in both databases: Air NZ', function (t) {
 	var newMovie = 'Captain America: Civil War'  //already in db, but not singapore
-	dbFunctions.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
+	db.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
 		t.ok(typeof resp === 'number', "Response from airline db is a movie.id number")
-			dbFunctions.findMovieInMovies(newMovie, function (error, resp) {
-				dbFunctions.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
+			db.findMovieInMovies(newMovie, function (error, resp) {
+				db.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
 					t.ok(resp.length === 1, "Only one entry in movies db for this movie")
 					t.ok(movieId.length === 1, "Only one entry in airline db for this movie")
 					t.ok(resp[0].id === movieId[0].movieId, 'Movie in airline is the same one in the database, and has not been added twice.')

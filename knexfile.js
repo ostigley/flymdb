@@ -28,19 +28,19 @@ module.exports = {
     client: 'sqlite3',
     connection: {
     filename: "./flymydb.sqlite"
-  },
-  seeds: {
-    directory: './seeds/'
-  },
-  useNullAsDefault: true,
-    pool: {
-      min: 1,
-      max: 1
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
+    seeds: {
+      directory: './seeds/'
+    },
+    useNullAsDefault: true,
+      pool: {
+        min: 1,
+        max: 1
+      },
+      migrations: {
+        tableName: 'knex_migrations'
+      }
+    },
 
   staging: {
     client: 'postgresql',
