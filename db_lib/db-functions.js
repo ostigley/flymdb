@@ -1,4 +1,5 @@
 var getMovie = require('../movie-data/get-movies.js');
+
 module.exports = function (knex) {
 	return {
 		airlineMovies: airlineMovies,
@@ -16,6 +17,26 @@ module.exports = function (knex) {
 			})
 			.catch(handleError)
 	};
+
+	// function cleanesDB () {
+	// 	var airlines = ['airnewzealand', 'singapore']
+	// 	var ids = []
+	// 		return Promise.all(airlines.map(function(airline) {
+	// 			return airlineMovies (airline, function (undefined, resp) {
+	// 				resp.map(function (movie) {
+	// 					ids.push(movie.id)
+	// 			})
+	// 		})
+	// 			.then( function () {
+	// 				console.log(ids)
+	// 			})
+	// 	})
+	// }
+
+	function deleteMovie (movieId) {
+		knex('movies')
+
+	}
 
 
 	function addMovieIfNotExist (title, airline, callback) {
@@ -43,11 +64,6 @@ module.exports = function (knex) {
 			.catch(handleError)
 	}
 
-	function emptyTable(table) {
-		console.log("tuesday")
-		return knex(table)
-			.del()
-	}
 
 	function doesMovieExist (title) {
 
@@ -61,6 +77,14 @@ module.exports = function (knex) {
 					}
 				})
 		})
+	}
+
+
+
+	function emptyTable(table) {
+		console.log("Emptying, ", table)
+		return knex(table)
+			.del()
 	}
 
 	function addNewMovie (movieData, table) {
@@ -124,6 +148,8 @@ function isEmpty (array) {
 	// console.log(array)
 	return array.length === 0;
 }
+
+
 
 function handleError (error) {
 	console.log("Error happend: ", error)

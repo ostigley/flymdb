@@ -113,6 +113,15 @@ test('Should add movie already in DB in to Air NZ DB', function (t) {
 	})
 })
 
+// test('*** should cleanes db of un-used movies ***', function (t) {
+// 	db.cleanesDB()
+// 		.then(function () {
+// 			findMovieInMovies('20', function (undefined, resp) {
+// 				t.ok(resp.length === 0)
+// 			})
+// 		})
+// })
+
 // test('Should not add movie already in both databases: Air NZ', function (t) {
 // 	var newMovie = 'Captain America: Civil War'  //already in db, but not singapore
 // 	db.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
