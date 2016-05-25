@@ -1,7 +1,7 @@
 function showfunctionButtons () {
 	var buttons = [makePosterButton(), GenreSelector()]
 	buttons.map(function(button) {
-		document.querySelector('.movies-container').appendChild(button)
+		document.querySelector('.buttons').appendChild(button)
 	})
 }
 
