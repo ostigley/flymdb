@@ -44,6 +44,7 @@ module.exports = function (knex) {
 	}
 
 	function emptyTable(table) {
+		console.log("tuesday")
 		return knex(table)
 			.del()
 	}

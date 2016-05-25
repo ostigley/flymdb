@@ -1,7 +1,4 @@
-// Update with your config settings.
 require('dotenv').config();
-var knex = require('knex')
-
 module.exports = {
 
   test: {
