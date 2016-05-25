@@ -62,7 +62,7 @@ function generateMovie (movie) {
 	synopsisLi.classList.add('synopsis')
 	plotP.classList.add('plot')
 
-	posterDiv.innerHTML= `<img src="https://placekitten.com/g/300/450">`
+	posterDiv.innerHTML= `<img src="${movie.Poster}">`
 	titleLi.innerHTML = `<a target="_blanck" href="http://www.imdb.com/title/${movie.imdbID}">${movie.Title}</a>`
 	ratingLi.innerHTML = '<strong>IMDB Rating:</strong> ' + movie.imdbRating
 	genreLi.innerHTML = '<strong>Genre: </strong>' + movie.Genre
