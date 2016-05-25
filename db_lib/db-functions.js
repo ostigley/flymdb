@@ -4,46 +4,72 @@ module.exports = function (knex) {
 		airlineMovies: airlineMovies,
 		addMovieIfNotExist: addMovieIfNotExist,
 		findMovieInMovies: findMovieInMovies,
-		findMovieInAirline: findMovieInAirline
+		findMovieInAirline: findMovieInAirline,
+		emptyTable: emptyTable
 	}
 
 	function airlineMovies (airline, callback) {
 		knex('movies')
 			.join(airline, 'movies.id', `${airline}.movieId`)
-			.then( function (resp) {
+			.then(function (resp) {
 				callback(null, resp);
 			})
 			.catch(handleError)
 	};
 
-	function addMovieIfNotExist (title, airline, callback) {
-		
-		findMovie(title)
-			.then( function (resp) {
-				if (isEmpty(resp)) {
-					getMovie([title])
-						.then(function (movieData) {
-							return addNewMovie(JSON.parse(movieData), 'movies')
-						})
-						.then(function (newId) {
-							return addMovieToAirline(newId[0], airline);
-						})		
-						.then(function (resp) {
-							// resp is [1] the airline movie id.  not the airline movieId
-							console.log("Movie added: ", title)
-							callback(null, resp);
-						});
-				} else {
 
-					return addMovieToAirline(resp[0].id, airline)
-						.then( function (resp) {
-							// response is [airline.id], or movie.id
-							console.log("Movie alredy in db: ", title)
-							callback(null, resp);
-						})
-				} 
+	function addMovieIfNotExist (title, airline, callback) {
+		doesMovieExist(title)
+			.then(function yes(resp) {
+				addNewMovie({movieId: resp.id}, airline)
+					.then(function (resp) {
+						console.log("Movie added -already in Movies: ", title)
+						callback(null, resp);
+					})
+			}, function no(resp) {
+				getMovie([title])
+					.then(function (apiData) {
+						return addNewMovie(apiData, 'movies')
+					})
+					.then(function (movieId) {
+					 	return addNewMovie({movieId: movieId[0]}, airline)
+					})
+					.then(function (resp) {
+						// resp is [1] the airline movie id.  not the airline movieId
+						console.log("Movie added: ", title)
+						callback(null, resp);
+					});
 			})
 			.catch(handleError)
+	}
+
+	function emptyTable(table) {
+		return knex(table)
+			.del()
+	}
+
+	function doesMovieExist (title) {
+
+		return new Promise ( function (resolve, reject) {
+			findMovie(title)
+				.then(function (resp) {
+					if (isEmpty(resp)) {
+						reject()
+					} else {
+						resolve(resp[0])
+					}
+				})
+		})
+	}
+
+	function addNewMovie (movieData, table) {
+		return knex(table)
+			.insert(movieData)
+	}
+
+	function addNewToMovies (movieData) {
+		return knex('movies')
+			.insert(movieData)
 	}
 
 	function findMovie (title) {
@@ -55,23 +81,18 @@ module.exports = function (knex) {
 	function findMovieInMovies (movieName, callback) {
 		knex('movies')
 			.where('Title', movieName)
-			.then( function (resp) {
+			.then(function (resp) {
 				callback(null, resp)
 			})
 	}
 
 	function findMovieInAirline (movieId, airline, callback) {
-		knex(airline)
-			.where('movieId', movieId)
+		return knex(airline)
+			.where({movieId: movieId})
 			.select('movieId')
-			.then( function (resp) {
+			.then(function (resp) {
 				callback(null, resp)
 			})
-	}
-
-	function addNewMovie (movieData, table) {
-		return knex(table)
-			.insert(movieData)
 	}
 
 	function movieNotInAirline (movieId, airline) {
@@ -83,21 +104,12 @@ module.exports = function (knex) {
 	}
 
 	function addMovieToAirline (movieId, airline) {
-		return new Promise (function (resolve, reject) {
-			movieNotInAirline(movieId, airline)
-				.then( function (resp) {
-					if (resp) {
-						addNewMovie({movieId: movieId}, airline)
-							.then( function (resp) {
-								// Response is [airline.id], not airline.movieId
-									resolve( resp);
-							});
-					} else {
-						//Response is original movie.id
-						resolve( movieId);
-					}
-				})
-		})
+		addNewMovie({movieId: movieId}, airline)
+			.then(function (resp) {
+				// Response is [airline.id], not airline.movieId
+					resolve( resp);
+			});
+				
 	}
 	
 }

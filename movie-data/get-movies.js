@@ -28,9 +28,9 @@ function omDB(uri) {
           body = emptyEntry
           body.Title = title
           body.Poster = "http://one-europe.info/user/files/Santino%20Santinelli/Flying_Film_Reel.jpg"
-          resolve(JSON.stringify(body))
+          resolve((body))
         } else {
-          resolve(body)
+          resolve(JSON.parse(body))
         }
       }
     })

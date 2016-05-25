@@ -2,19 +2,25 @@ var requestAnz = require('./requestAirNewZealand.js')
 var scrapeMovies = require('./scrape-movies.js')
 var getMovieRatings = require('./../../movie-data/get-movies.js')
 var noRepeats = require('./no-airNz-repeats.js')
-var db = require('../../db_lib/db-functions.js')
+
+
 var Promise = require('bluebird')
-var knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-    filename: "./flymydb.sqlite"
-	 },
-	 useNullAsDefault: true
-});
+
+
+var knexConfig = require('../../knexfile.js')[process.env.NODE_ENV]  // declaires db environment
+var knex = require('knex')(knexConfig) // sets up knex with environment config. 
+
+var dbFunctions = require('../../db_lib/db-functions.js')  // pulls in our db functions
+var db = dbFunctions(knex)  // decalres our db functions with knex environment
+
+
 // get movies from air new zealand, send callback as 
 
 module.exports = function () {
-		return requestAnz()
+		return db.emptyTable('airnewzealand')
+			.then(function () {
+				requestAnz()	
+			})
 			.then(scrapeMovies)
 			.then(noRepeats)
 			.then(function (movieTitlesArray) {
