@@ -64,11 +64,7 @@ module.exports = {
 
   production: {
     client: 'postgresql',
-    // connection: {
-    //   database: 'flymdbDB',
-    //   user:     'process.env.PGSQL_USERNAME',
-    //   password: 'process.env.PGSQL_PASSWORD'
-    // },
+    connection: {},
     pool: {
       min: 2,
       max: 10
