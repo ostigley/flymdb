@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 module.exports = {
 
   test: {
@@ -16,8 +16,8 @@ module.exports = {
     tableName: 'knex_migrations',
     useNullAsDefault: true,
     pool: {
-      min: 1,
-      max: 1
+      min: 2,
+      max: 10
     },
     migrations: {
       tableName: 'knex_migrations'

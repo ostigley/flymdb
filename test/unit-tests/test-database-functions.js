@@ -21,7 +21,7 @@ var test = redtape({
 	afterEach: function (callback) {
 		return knex.migrate.rollback()
 			.then(function () {
-				// knex.destroy()
+				knex.destroy()
 				callback()
 			})
 	}
@@ -31,6 +31,7 @@ var test = redtape({
 // test show movies for airlinen function
 test ('Should return a list of movies from airNz', function (t) {
 	db.airlineMovies('airnewzealand', function (error, resp) {
+		console.log(resp)
 		if (error) {
 			console.log(error)
 		} else {
