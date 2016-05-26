@@ -50,8 +50,8 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'flymdbDB',
-      user:     'process.env.PGSQL_USERNAME',
-      password: 'process.env.PGSQL_PASSWORD'
+      user:     process.env.PGSQL_USERNAME,
+      password: process.env.PGSQL_PASSWORD
     },
     pool: {
       min: 2,
@@ -66,8 +66,8 @@ module.exports = {
     client: 'postgresql',
     connection: {
       database: 'flymdbDB',
-      user:     'username',
-      password: 'password'
+      user:     process.env.PGSQL_USERNAME,
+      password: process.env.PGSQL_PASSWORD
     },
     pool: {
       min: 2,
