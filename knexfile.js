@@ -24,23 +24,27 @@ module.exports = {
     }
   },
 
-  development: {
-    client: 'sqlite3',
+   development: {
+    client: 'pg',
     connection: {
-    filename: "./flymydb.sqlite"
+      user: process.env.PGSQL_USERNAME,
+      password: process.env.PGSQL_PASSWORD,
+      host: 'localhost',
+      port: 5432
     },
+    directory: './migrations/',
     seeds: {
       directory: './seeds/'
     },
-    useNullAsDefault: true,
-      pool: {
-        min: 1,
-        max: 1
-      },
-      migrations: {
-        tableName: 'knex_migrations'
-      }
+    tableName: 'knex_migrations',
+    pool: {
+      min: 1,
+      max: 1
     },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
+  },
 
   staging: {
     client: 'postgresql',

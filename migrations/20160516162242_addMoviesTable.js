@@ -9,9 +9,9 @@ exports.up = function(knex, Promise) {
 	 	table.string('Runtime');
 	 	table.string('Genre');
 	 	table.string('Director');
-	 	table.string('Writer');
-	 	table.string('Actors');
-	 	table.string('Plot');
+	 	table.text('Writer');
+	 	table.text('Actors');
+	 	table.text('Plot');
 	 	table.string('Language');
 	 	table.string('Country');
 	 	table.string('Awards');
@@ -27,7 +27,7 @@ exports.up = function(knex, Promise) {
 	 	table.string('tomatoReviews');
 	 	table.string('tomatoFresh');
 	 	table.string('tomatoRotten');
-	 	table.string('tomatoConsensus');
+	 	table.text('tomatoConsensus');
 	 	table.string('tomatoUserMeter');
 	 	table.string('tomatoUserRating');
 	 	table.string('tomatoUserReviews');
