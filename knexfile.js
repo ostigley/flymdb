@@ -64,7 +64,11 @@ module.exports = {
 
   production: {
     client: 'postgresql',
-    connection: {},
+    connection: {
+      database: 'flymdbDB',
+      user:     'username',
+      password: 'password'
+    },
     pool: {
       min: 2,
       max: 10
