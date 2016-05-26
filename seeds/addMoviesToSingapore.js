@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
     knex('singapore').del(),
 
     // Inserts seed entries
-    knex('singapore').insert({id: 1, movieId: 2}),
-    knex('singapore').insert({id: 2, movieId: 3})
+    knex('singapore').insert({movieId: 2}),
+    knex('singapore').insert({movieId: 3})
   );
 };

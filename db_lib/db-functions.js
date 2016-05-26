@@ -13,6 +13,7 @@ module.exports = function (knex) {
 		knex('movies')
 			.join(airline, 'movies.id', `${airline}.movieId`)
 			.then(function (resp) {
+				// console.log("thursday", resp)
 				callback(null, resp);
 			})
 			.catch(handleError)
@@ -45,20 +46,21 @@ module.exports = function (knex) {
 				addNewMovie({movieId: resp.id}, airline)
 					.then(function (resp) {
 						console.log("Movie added -already in Movies: ", title)
-						callback(null, resp);
+
+						callback(null, [resp[0].id]);
 					})
 			}, function no(resp) {
 				getMovie([title])
 					.then(function (apiData) {
-						return addNewMovie(apiData, 'movies')
+						return addNewMovie(apiData[0], 'movies')
 					})
 					.then(function (movieId) {
-					 	return addNewMovie({movieId: movieId[0]}, airline)
+					 	return addNewMovie({movieId: movieId[0].id}, airline)
 					})
 					.then(function (resp) {
 						// resp is [1] the airline movie id.  not the airline movieId
 						console.log("Movie added: ", title)
-						callback(null, resp);
+						callback(null, [resp[0].id]);
 					});
 			})
 			.catch(handleError)
@@ -89,13 +91,14 @@ module.exports = function (knex) {
 
 	function addNewMovie (movieData, table) {
 		return knex(table)
-			.returning('id')
+			.returning(['id'])
 			.insert(movieData)
+			.catch(handleError)
 	}
 
 	function addNewToMovies (movieData) {
 		return knex('movies')
-			.returning('id')
+			// .returning('id')
 			.insert(movieData)
 	}
 

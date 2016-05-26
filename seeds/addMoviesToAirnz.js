@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
     knex('airnewzealand').del(),
 
     // Inserts seed entries
-    knex('airnewzealand').insert({id: 1, movieId: 1}),
-    knex('airnewzealand').insert({id: 2, movieId: 2})
+    knex('airnewzealand').insert({movieId: 1}),
+    knex('airnewzealand').insert({movieId: 2})
   );
 };

@@ -2,9 +2,12 @@ require('dotenv').config();
 module.exports = {
 
   test: {
-    client: 'sqlite3',
+    client: 'pg',
     connection: {
-      filename: "./testflymydb.sqlite"
+      user: process.env.PGSQL_USERNAME,
+      password: process.env.PGSQL_PASSWORD,
+      host: 'localhost',
+      port: 5432
     },
     directory: './migrations/',
     seeds: {
