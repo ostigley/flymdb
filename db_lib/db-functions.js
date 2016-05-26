@@ -19,21 +19,6 @@ module.exports = function (knex) {
 			.catch(handleError)
 	};
 
-	// function cleanesDB () {
-	// 	var airlines = ['airnewzealand', 'singapore']
-	// 	var ids = []
-	// 		return Promise.all(airlines.map(function(airline) {
-	// 			return airlineMovies (airline, function (undefined, resp) {
-	// 				resp.map(function (movie) {
-	// 					ids.push(movie.id)
-	// 			})
-	// 		})
-	// 			.then( function () {
-	// 				console.log(ids)
-	// 			})
-	// 	})
-	// }
-
 	function deleteMovie (movieId) {
 		knex('movies')
 
