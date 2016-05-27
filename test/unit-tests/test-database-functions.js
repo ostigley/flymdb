@@ -21,17 +21,14 @@ var test = redtape({
 	afterEach: function (callback) {
 		return knex.migrate.rollback()
 			.then(function () {
-				knex.destroy()
 				callback()
 			})
 	}
 })
 
 
-// test show movies for airlinen function
 test ('Should return a list of movies from airNz', function (t) {
 	db.airlineMovies('airnewzealand', function (error, resp) {
-		console.log(resp)
 		if (error) {
 			console.log(error)
 		} else {
@@ -114,29 +111,7 @@ test('Should add movie already in DB in to Air NZ DB', function (t) {
 	})
 })
 
-// test('*** should cleanes db of un-used movies ***', function (t) {
-// 	db.cleanesDB()
-// 		.then(function () {
-// 			findMovieInMovies('20', function (undefined, resp) {
-// 				t.ok(resp.length === 0)
-// 			})
-// 		})
-// })
 
-// test('Should not add movie already in both databases: Air NZ', function (t) {
-// 	var newMovie = 'Captain America: Civil War'  //already in db, but not singapore
-// 	db.addMovieIfNotExist(newMovie, 'airnewzealand', function (error, resp) {
-// 		t.ok(typeof resp === 'number', "Response from airline db is a movie.id number")
-// 			db.findMovieInMovies(newMovie, function (error, resp) {
-// 				db.findMovieInAirline(resp[0].id, 'airnewzealand', function (error, movieId) {
-// 					t.ok(resp.length === 1, "Only one entry in movies db for this movie")
-// 					t.ok(movieId.length === 1, "Only one entry in airline db for this movie")
-// 					t.ok(resp[0].id === movieId[0].movieId, 'Movie in airline is the same one in the database, and has not been added twice.')
-// 					t.end()
-// 				})
-// 			})
-// 	})
-// })
 
 
 

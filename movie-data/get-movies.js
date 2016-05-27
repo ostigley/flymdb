@@ -1,7 +1,7 @@
 var request = require ('request')
 var qs = require('query-string')
 var badResponse = {"Response":"False","Error":"Movie not found!"}
-var emptyEntry = {Title:"",Year:"",Rated:"",Released:"",Runtime:"",Genre:"",Director:"",Writer:"",Actors:"",Plot:"",Language:"",Country:"",Awards:"",Poster:"",Metascore:"",imdbRating:"",imdbVotes:"",imdbID:"",Type:"",tomatoMeter:"",tomatoImage:"",tomatoRating:"",tomatoReviews:"",tomatoFresh:"",tomatoRotten:"",tomatoConsensus:"",tomatoUserMeter:"",tomatoUserRating:"",tomatoUserReviews:"",tomatoURL:"",DVD:"",BoxOffice:"",Production:"",Website:"",Response:""};
+const emptyEntry = {Title:"",Year:"",Rated:"",Released:"",Runtime:"",Genre:"",Director:"",Writer:"",Actors:"",Plot:"",Language:"",Country:"",Awards:"",Poster:"",Metascore:"",imdbRating:"",imdbVotes:"",imdbID:"",Type:"",tomatoMeter:"",tomatoImage:"",tomatoRating:"",tomatoReviews:"",tomatoFresh:"",tomatoRotten:"",tomatoConsensus:"",tomatoUserMeter:"",tomatoUserRating:"",tomatoUserReviews:"",tomatoURL:"",DVD:"",BoxOffice:"",Production:"",Website:"",Response:""};
 
 module.exports = function (titlesArray) {
 	var hostname = "http://www.omdbapi.com/?"
@@ -24,11 +24,12 @@ function omDB(uri) {
         reject(error)
       } else {
         if (JSON.parse(body).Response === "False") {
+
           var title =  qs.parse(uri)['http://www.omdbapi.com/?t']
-          body = emptyEntry
+          body = {Title:"",Year:"",Rated:"",Released:"",Runtime:"",Genre:"",Director:"",Writer:"",Actors:"",Plot:"",Language:"",Country:"",Awards:"",Poster:"",Metascore:"",imdbRating:"",imdbVotes:"",imdbID:"",Type:"",tomatoMeter:"",tomatoImage:"",tomatoRating:"",tomatoReviews:"",tomatoFresh:"",tomatoRotten:"",tomatoConsensus:"",tomatoUserMeter:"",tomatoUserRating:"",tomatoUserReviews:"",tomatoURL:"",DVD:"",BoxOffice:"",Production:"",Website:"",Response:""};
           body.Title = title
-          body.Poster = "http://one-europe.info/user/files/Santino%20Santinelli/Flying_Film_Reel.jpg"
-          resolve((body))
+          body.Poster = "../stylesheets/Flying_Film_Reel.jpg"
+          resolve(body)
         } else {
           resolve(JSON.parse(body))
         }

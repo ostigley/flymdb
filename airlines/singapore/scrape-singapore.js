@@ -1,7 +1,6 @@
 var cheerio = require('cheerio')
 
 module.exports = function (html) {
-	console.log(html)
 	var possibleMovies = []
 
 	function scrape2 (titlesArray) {

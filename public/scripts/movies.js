@@ -1,6 +1,7 @@
 var movies
 var genres
 function getMovies () {
+	document.querySelector('.movies-container').innerHTML = ""
 	var params = document.getElementById('airline').value
 	$.ajax({
 		url: "/movies",
@@ -40,6 +41,8 @@ function renderMovies (result) {
 // };
 
 function generateMovie (movie) {
+	if (movie.Poster === "N/A") movie.Poster = 	"../stylesheets/Flying_Film_Reel.jpg"
+
 	var movieDiv = document.createElement('div')
 	var posterDiv = document.createElement('div')
 	var detailsDiv = document.createElement('div')
@@ -81,6 +84,8 @@ function generateMovie (movie) {
 }
 function sortMoviesRating (moviesArray) {
 	moviesArray.sort(function (a, b) {
+	if (a.imdbRating === "N/A") a.imdbRating = 0
+
 		if (a.imdbRating < b.imdbRating ) {
 		    return 1;
 		} else if (a.imdbRating > b.imdbRating ) {
