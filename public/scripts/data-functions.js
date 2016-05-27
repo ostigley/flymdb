@@ -1,6 +1,7 @@
 function showfunctionButtons () {
 	var buttons = [makePosterButton(), GenreSelector()]
 	buttons.map(function(button) {
+		document.querySelector('.buttons').innerHTML = ""
 		document.querySelector('.buttons').appendChild(button)
 	})
 }

@@ -13,7 +13,6 @@ module.exports = function (knex) {
 		knex('movies')
 			.join(airline, 'movies.id', `${airline}.movieId`)
 			.then(function (resp) {
-				// console.log("thursday", resp)
 				callback(null, resp);
 			})
 			.catch(handleError)

@@ -26,14 +26,15 @@ function selectDateChangeHandler (airlineSelection) {
 }
 
 function singaporeDates() {
-	dateSelect.classList.toggle('show-hide')
-	var singaporeDateOptions = ["This month", "Next month"]
-	singaporeDateOptions.map(function (date){
-		var option = document.createElement("option")
-		option.value = date.replace(" ","").toLowerCase()
-		option.text = date
-		dateOptions.appendChild(option)		
-	})
+	dateSelect.classList.remove('show-hide')
+	// dateSelect.classList.toggle('show-hide')
+	// var singaporeDateOptions = ["This month"], "Next month"]
+	// singaporeDateOptions.map(function (date){
+	// 	var option = document.createElement("option")
+	// 	option.value = date.replace(" ","").toLowerCase()
+	// 	option.text = date
+	// 	dateOptions.appendChild(option)		
+	// })
 }
 
 function airnewzealandDates() {
